@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #030712;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom In-Game Retro Font classes */
+.font-vcr {
+  font-family: 'VT323', 'VCR OSD Mono', monospace;
+}
+
+.font-pixel {
+  font-family: 'Press Start 2P', monospace;
+}
+
+.font-game {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Authentic Innersloth Among Us Display Typography */
+.among-title {
+  font-family: 'Amatic SC', 'Bungee', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 6px 0 #000;
+}
+
+.among-outline {
+  text-shadow: 3px 3px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 4px 0 #000;
+}
+
+.among-shhh-glow {
+  filter: drop-shadow(0 0 35px rgba(239, 125, 13, 0.45)) drop-shadow(0 0 15px rgba(245, 245, 87, 0.35));
+}
+
+/* Diamond Cafeteria Floor Tile Pattern */
+.bg-cafeteria-tiles {
+  background-color: #55626E;
+  background-image: 
+    linear-gradient(45deg, #4A5661 25%, transparent 25%), 
+    linear-gradient(-45deg, #4A5661 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #4A5661 75%), 
+    linear-gradient(-45deg, transparent 75%, #4A5661 75%);
+  background-size: 54px 54px;
+  background-position: 0 0, 0 27px, 27px -27px, -27px 0px;
+}
+
+.cafeteria-room {
+  /* Widescreen 1200x700 cafeteria hall with strict aspect preservation to prevent any cropping */
+  width: 100%;
+  max-width: min(94vw, calc((100vh - 10rem) * (1200 / 700)));
+  aspect-ratio: 1200 / 700;
+  height: auto;
+  position: relative;
+}
+
+/* Spaceship CRT Scanline Overlay */
+.scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Hazard Yellow & Black Stripes */
+.hazard-stripes {
+  background: repeating-linear-gradient(
+    45deg,
+    #F5F557,
+    #F5F557 12px,
+    #1E1F26 12px,
+    #1E1F26 24px
+  );
+}
+
+/* Starfield particle twinkle */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.star-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+/* Speech Bubble Tails */
+.bubble-tail-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #FFFFFF;
+}
+
+.bubble-tail-top::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #FFFFFF;
+}
+
+/* Glass Casing 3D Perspective */
+.perspective-container {
+  perspective: 1000px;
+}
+
+.glass-cover {
+  transform: rotateX(0deg);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.glass-cover-open {
+  transform: rotateX(-110deg) scale(0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-strobe {
+    animation: none !important;
+    opacity: 0.3;
+  }
+}
+

@@ -1,0 +1,55 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies & Build artifacts
+node_modules/
+dist/
+dist-ssr/
+build/
+coverage/
+*.tsbuildinfo
+.vite/
+.eslintcache
+
+# Environment variables & secrets (CRITICAL)
+.env
+.env.*
+*.env
+!.env.example
+
+# Local automation & browser test profiles
+.chrome-tmp/
+.edge-tmp/
+*.tmp
+scripts/
+
+# Editor & OS files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Private keys & credentials
+*.pem
+*.key
+*.cer
+*.pfx
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub

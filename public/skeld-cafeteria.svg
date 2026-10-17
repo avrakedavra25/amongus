@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Skeld Cafeteria Hall</title>
+  <desc id="desc">Spacious top-down octagonal spaceship cafeteria hall with diamond floor tiles, four separated outer tables, and an expansive central meeting table.</desc>
+  <defs>
+    <!-- Authentic Diamond Tile Pattern -->
+    <pattern id="tile" width="52" height="52" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="52" height="52" fill="#8E99A4"/>
+      <path d="M0 0H52M0 0V52" fill="none" stroke="#78848F" stroke-width="2"/>
+      <path d="M26 0V52M0 26H52" fill="none" stroke="#A2ADB8" stroke-width="1" opacity=".6"/>
+    </pattern>
+
+    <!-- Wall Shading -->
+    <linearGradient id="wall" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#557585"/>
+      <stop offset="1" stop-color="#364E59"/>
+    </linearGradient>
+
+    <!-- Deep Space Gradient for Windows -->
+    <linearGradient id="spaceGrad" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#020409"/>
+      <stop offset="1" stop-color="#0B1320"/>
+    </linearGradient>
+
+    <!-- Table Shadow Filter -->
+    <filter id="tableShadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
+      <feOffset dy="8"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".5"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Floor Boundary Clip -->
+    <clipPath id="roomFloor">
+      <path d="M120 70 H1080 L1155 145 V520 L1020 655 H680 V690 H520 V655 H180 L45 520 V145 Z"/>
+    </clipPath>
+
+    <!-- Reusable Cafeteria Table with 4 Crescent Chairs -->
+    <g id="table">
+      <!-- 4 Curved Outer Chairs / Benches -->
+      <path d="M-45-55 A72 72 0 0 0 -72-20 L-90-25 A92 92 0 0 1 -56-72 Z" fill="#244F67" stroke="#122A38" stroke-width="3"/>
+      <path d="M45-55 A72 72 0 0 1 72-20 L90-25 A92 92 0 0 0 56-72 Z" fill="#244F67" stroke="#122A38" stroke-width="3"/>
+      <path d="M-72 20 A72 72 0 0 0 -45 55 L-56 72 A92 92 0 0 1 -90 25 Z" fill="#244F67" stroke="#122A38" stroke-width="3"/>
+      <path d="M72 20 A72 72 0 0 1 45 55 L56 72 A92 92 0 0 0 90 25 Z" fill="#244F67" stroke="#122A38" stroke-width="3"/>
+      
+      <!-- Main Circular Blue Tabletop -->
+      <circle r="66" fill="#3A7293" stroke="#173446" stroke-width="5"/>
+      <!-- Inner Table Bevel Highlight -->
+      <path d="M-46-46 Q0-64 46-46" fill="none" stroke="#68A5C7" stroke-width="3.5" opacity=".8"/>
+      <circle r="60" fill="none" stroke="#2B5975" stroke-width="2" opacity=".4"/>
+    </g>
+
+    <!-- Papers / Folders on tables -->
+    <g id="tablePaper" fill="#EAE4C8" stroke="#3D4542" stroke-width="2">
+      <path d="M-12-8 L10-12 L20 6 L-2 10 Z"/>
+      <path d="M-6-3 L8-6" fill="none"/>
+    </g>
+  </defs>
+
+  <!-- Deep Space Backdrop Outside Ship -->
+  <rect width="1200" height="700" fill="#03060B"/>
+
+  <!-- Ship Hull Outer Steel Structure -->
+  <path d="M110 30 H1090 L1175 125 V535 L1035 675 H690 V700 H510 V675 H165 L25 535 V125 Z" fill="#131B21" stroke="#080C0E" stroke-width="14"/>
+  
+  <!-- Metallic Teal/Grey Inner Wall Rim -->
+  <path d="M118 45 H1082 L1158 135 V525 L1022 660 H680 V692 H520 V660 H178 L42 525 V135 Z" fill="url(#wall)" stroke="#22333B" stroke-width="8"/>
+
+  <!-- Spacious Diamond Tile Floor -->
+  <rect x="20" y="60" width="1160" height="610" fill="url(#tile)" clip-path="url(#roomFloor)"/>
+
+  <!-- Top Observation Panoramic Windows with Deep Space & Stars -->
+  <g>
+    <!-- Window Frames -->
+    <g fill="#1F2F38" stroke="#121D23" stroke-width="4">
+      <rect x="260" y="48" width="80" height="36" rx="4"/>
+      <rect x="355" y="48" width="80" height="36" rx="4"/>
+      <rect x="450" y="48" width="80" height="36" rx="4"/>
+      <rect x="545" y="48" width="110" height="36" rx="4"/>
+      <rect x="670" y="48" width="80" height="36" rx="4"/>
+      <rect x="765" y="48" width="80" height="36" rx="4"/>
+      <rect x="860" y="48" width="80" height="36" rx="4"/>
+    </g>
+    <!-- Window Glass with Stars -->
+    <g fill="url(#spaceGrad)" opacity=".95">
+      <rect x="266" y="53" width="68" height="26" rx="2"/>
+      <rect x="361" y="53" width="68" height="26" rx="2"/>
+      <rect x="456" y="53" width="68" height="26" rx="2"/>
+      <rect x="551" y="53" width="98" height="26" rx="2"/>
+      <rect x="676" y="53" width="68" height="26" rx="2"/>
+      <rect x="771" y="53" width="68" height="26" rx="2"/>
+      <rect x="866" y="53" width="68" height="26" rx="2"/>
+    </g>
+    <!-- Tiny Stars visible in windows -->
+    <g fill="#FFFFFF" opacity=".7">
+      <circle cx="280" cy="62" r="1.5"/><circle cx="395" cy="67" r="1.2"/>
+      <circle cx="485" cy="58" r="1.5"/><circle cx="580" cy="65" r="2"/>
+      <circle cx="615" cy="60" r="1.2"/><circle cx="710" cy="66" r="1.5"/>
+      <circle cx="810" cy="59" r="1.2"/><circle cx="895" cy="63" r="1.5"/>
+    </g>
+  </g>
+
+  <!-- Side Corridors / Doors -->
+  <g fill="#435C66" stroke="#1D2A2F" stroke-width="5">
+    <rect x="24" y="270" width="20" height="120" rx="2"/>
+    <rect x="1156" y="270" width="20" height="120" rx="2"/>
+  </g>
+  <g stroke="#263A42" stroke-width="3">
+    <path d="M28 280 V380 M34 280 V380 M1166 280 V380 M1172 280 V380"/>
+  </g>
+
+  <!-- Bottom Entrance Vestibule -->
+  <path d="M520 655 H680 V692 H520 Z" fill="#2E444D" stroke="#18252B" stroke-width="5"/>
+  <rect x="535" y="662" width="130" height="24" rx="3" fill="#4B6975" stroke="#1D2C33" stroke-width="3"/>
+  <path d="M545 667 H655 M545 673 H655 M545 679 H655" stroke="#2E454F" stroke-width="2"/>
+
+  <!-- THE 4 SEPARATED OUTER TABLES AND EXPANSIVE CENTRAL MEETING TABLE -->
+  <g filter="url(#tableShadow)">
+    <!-- Top-Left Table (Event Info) - Pushed well into top-left quadrant -->
+    <g transform="translate(220 200)">
+      <use href="#table"/>
+      <use href="#tablePaper" transform="translate(-24 10) scale(.65)"/>
+      <circle cx="24" cy="18" r="5" fill="#C2C2B0" stroke="#33454A" stroke-width="2"/>
+    </g>
+
+    <!-- Top-Right Table (Rules & Safety) - Pushed well into top-right quadrant -->
+    <g transform="translate(980 200)">
+      <use href="#table"/>
+      <use href="#tablePaper" transform="translate(-18 -22) scale(.75)"/>
+      <use href="#tablePaper" transform="translate(16 16) scale(.85)"/>
+    </g>
+
+    <!-- Bottom-Left Table (FAQs) - Pushed well into bottom-left quadrant -->
+    <g transform="translate(220 520)">
+      <use href="#table"/>
+      <use href="#tablePaper" transform="translate(10 -20) scale(.8)"/>
+      <circle cx="-25" cy="6" r="6" fill="#C2C2B0" stroke="#33454A" stroke-width="2"/>
+    </g>
+
+    <!-- Bottom-Right Table (Prizes) - Pushed well into bottom-right quadrant -->
+    <g transform="translate(980 520)">
+      <use href="#table"/>
+      <use href="#tablePaper" transform="translate(-15 -14) scale(.8)"/>
+      <circle cx="26" cy="-8" r="5.5" fill="#C2C2B0" stroke="#33454A" stroke-width="2"/>
+    </g>
+
+    <!-- EXPANSIVE CENTRAL MEETING TABLE (Large, circular, lots of room for crewmates) -->
+    <g transform="translate(600 360)">
+      <!-- 6 Curved Crescent Outer Benches for Crewmates -->
+      <g fill="#244F67" stroke="#122A38" stroke-width="3.5">
+        <path d="M-60-85 A108 108 0 0 0 -95-35 L-118-42 A134 134 0 0 1 -76-108 Z"/>
+        <path d="M60-85 A108 108 0 0 1 95-35 L118-42 A134 134 0 0 0 76-108 Z"/>
+        <path d="M-110 0 A108 108 0 0 0 -95 50 L-118 60 A134 134 0 0 1 -134 0 Z"/>
+        <path d="M110 0 A108 108 0 0 1 95 50 L118 60 A134 134 0 0 0 134 0 Z"/>
+        <path d="M-60 85 A108 108 0 0 0 -30 102 L-36 128 A134 134 0 0 1 -76 108 Z"/>
+        <path d="M60 85 A108 108 0 0 1 30 102 L36 128 A134 134 0 0 0 76 108 Z"/>
+      </g>
+      
+      <!-- Big Blue Cafeteria Tabletop (r = 96) -->
+      <circle r="98" fill="#326B8C" stroke="#132F40" stroke-width="6"/>
+      <!-- Inner Table Bevel Rings -->
+      <circle r="90" fill="none" stroke="#5294BA" stroke-width="4" opacity=".7"/>
+      <circle r="84" fill="#295B78"/>
+      <circle r="46" fill="#1E455C" stroke="#112836" stroke-width="2"/>
+    </g>
+  </g>
+</svg>
