@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, Laptop, Sparkles } from 'lucide-react';
 import { sound } from '../lib/sound';
 import { Crewmate, CrewmateColor, HatType } from '../assets/crewmates';
@@ -9,6 +9,7 @@ interface CafeteriaHeroProps {
   onOpenSection: (section: TableSectionType) => void;
   onTriggerEmergency: () => void;
   onScrollDown: () => void;
+  isRegistered?: boolean;
 }
 
 interface TableCrewmate {
@@ -18,6 +19,7 @@ interface TableCrewmate {
   name: string;
   defaultQuote: string;
   urgentQuote: string;
+  registeredQuote: string;
   xPercent: number; // exact % in 1200x700 coordinate space
   yPercent: number;
   bubblePosition?: 'top' | 'bottom';
@@ -45,11 +47,19 @@ const OUTER_TABLES: Array<{
 export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
   onOpenSection,
   onTriggerEmergency,
-  onScrollDown
+  onScrollDown,
+  isRegistered = false
 }) => {
   const [isCaseOpen, setIsCaseOpen] = useState(false);
   const [isButtonDepressed, setIsButtonDepressed] = useState(false);
   const [hoveredCrewmate, setHoveredCrewmate] = useState<string | null>(null);
+
+  // Snap the glass safety case back over the button once registration completes
+  useEffect(() => {
+    if (isRegistered) {
+      setIsCaseOpen(false);
+    }
+  }, [isRegistered]);
 
   // 7 Crewmates positioned around the CENTRAL MEETING TABLE (center at 50%, 51.4%)
   // All standing comfortably OUTSIDE the table on the floor tiles
@@ -61,6 +71,7 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
       name: 'Red',
       defaultQuote: `Date & time to be announced soon! Venue: ${EVENT_CONFIG.venue}.`,
       urgentQuote: 'WHAT ARE YOU WAITING FOR, REGISTER NOW!!',
+      registeredQuote: 'Thank you for registering! Be ready for lockdown!',
       xPercent: 50.0,
       yPercent: 32.5,
       bubblePosition: 'top',
@@ -73,6 +84,7 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
       name: 'Yellow',
       defaultQuote: 'Check the rules laptop before entering Electrical sector!',
       urgentQuote: 'REGISTER NOW BEFORE THE SLOTS FILL UP!',
+      registeredQuote: 'Be ready, Crewmate! Trust no one in the corridors!',
       xPercent: 41.0,
       yPercent: 39.0,
       bubblePosition: 'top',
@@ -85,6 +97,7 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
       name: 'Pink',
       defaultQuote: `${EVENT_CONFIG.entryFee}; bring your student ID card!`,
       urgentQuote: 'HIT THAT BUTTON! REGISTER NOW!',
+      registeredQuote: 'Thank you! Keep your student ID ready for check-in!',
       xPercent: 59.0,
       yPercent: 39.0,
       bubblePosition: 'top',
@@ -97,6 +110,7 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
       name: 'Green',
       defaultQuote: `Squad size: ${EVENT_CONFIG.squadSize}.`,
       urgentQuote: 'WHAT ARE YOU WAITING FOR?! SIGN UP NOW!!',
+      registeredQuote: 'Be ready! Your boarding pass is locked in!',
       xPercent: 36.5,
       yPercent: 50.0,
       bubblePosition: 'top',
@@ -109,6 +123,7 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
       name: 'Cyan',
       defaultQuote: 'Never played Among Us before? Anyone can jump right in!',
       urgentQuote: 'DONT DELAY! COMPLETE YOUR CREWMATE REGISTRATION NOW!',
+      registeredQuote: 'Thank you, Crewmate! Welcome aboard The Skeld!',
       xPercent: 63.5,
       yPercent: 50.0,
       bubblePosition: 'top',
@@ -121,6 +136,7 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
       name: 'Blue',
       defaultQuote: 'Reporting a body pauses the sector for a 3-minute vote.',
       urgentQuote: 'PRESS THE BUTTON! JOIN THE LOBBY NOW!',
+      registeredQuote: 'Be ready when the emergency siren sounds!',
       xPercent: 41.5,
       yPercent: 65.5,
       bubblePosition: 'bottom',
@@ -133,6 +149,7 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
       name: 'Purple',
       defaultQuote: 'Eliminations are strictly zero-contact tag only!',
       urgentQuote: 'QUICK! REGISTER BEFORE IMPOSTORS SABOTAGE!',
+      registeredQuote: 'Thank you! Stay sharp and be ready!',
       xPercent: 58.5,
       yPercent: 65.5,
       bubblePosition: 'bottom',
@@ -142,12 +159,14 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
 
   // Stage 1: Flip open protective glass case
   const handleGlassClick = () => {
+    if (isRegistered) return;
     sound.playGlassOpen();
     setIsCaseOpen(true);
   };
 
   // Stage 2: Slam the red Emergency Button
   const handleButtonClick = () => {
+    if (isRegistered) return;
     if (!isCaseOpen) {
       handleGlassClick();
       return;
@@ -386,8 +405,8 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
                       : 'bottom-full mb-2 bubble-tail-bottom'
                   }`}
                 >
-                  <span className={isCaseOpen ? 'text-among-red animate-pulse' : 'text-gray-900'}>
-                    {isCaseOpen ? crew.urgentQuote : crew.defaultQuote}
+                  <span className={isRegistered ? 'text-emerald-700' : isCaseOpen ? 'text-among-red animate-pulse' : 'text-gray-900'}>
+                    {isRegistered ? crew.registeredQuote : isCaseOpen ? crew.urgentQuote : crew.defaultQuote}
                   </span>
                 </div>
               )}
@@ -423,15 +442,20 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
             <button
               type="button"
               onClick={handleButtonClick}
-              aria-label={isCaseOpen ? 'Press emergency button to register' : 'Emergency button locked under safety cover'}
+              disabled={isRegistered}
+              aria-label={isRegistered ? 'Registration already completed' : isCaseOpen ? 'Press emergency button to register' : 'Emergency button locked under safety cover'}
               className={`relative z-10 flex aspect-square h-[88%] w-[88%] shrink-0 items-center justify-center rounded-full border sm:border-2 border-black text-white font-black select-none transition-all ${
-                isButtonDepressed ? 'scale-95 shadow-none' : 'hover:scale-105 active:scale-95'
+                isRegistered
+                  ? 'cursor-not-allowed opacity-80'
+                  : isButtonDepressed
+                    ? 'scale-95 shadow-none'
+                    : 'hover:scale-105 active:scale-95'
               }`}
               style={{
                 backgroundColor: '#C51111',
                 boxShadow: isButtonDepressed ? 'none' : '0 3px 0 #7A0838, 0 4px 8px rgba(0,0,0,0.8)'
               }}
-              title={isCaseOpen ? 'Press to trigger Emergency Registration' : 'Click glass cover first'}
+              title={isRegistered ? 'Registration already completed' : isCaseOpen ? 'Press to trigger Emergency Registration' : 'Click glass cover first'}
             >
               {/* Scalable Vector Label Guaranteed Never to Crop */}
               <svg viewBox="0 0 100 100" className="w-[92%] h-[92%] pointer-events-none select-none">
@@ -454,43 +478,51 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
                   y="65"
                   textAnchor="middle"
                   dominantBaseline="central"
-                  fill="#FEF08A"
+                  fill={isRegistered ? '#86EFAC' : '#FEF08A'}
                   fontWeight="900"
                   fontSize="12"
                   fontFamily="monospace"
                   letterSpacing="0.8"
                   style={{ filter: 'drop-shadow(0 1.5px 2px rgba(0,0,0,0.95))' }}
                 >
-                  {isCaseOpen ? 'PRESS' : 'LOCKED'}
+                  {isRegistered ? 'DONE' : isCaseOpen ? 'PRESS' : 'LOCKED'}
                 </text>
               </svg>
             </button>
 
-            {/* 3D Circular Glass Safety Casing (Flips open backwards on Click 1) */}
+            {/* 3D Circular Glass Safety Casing (Flips open backwards on Click 1, locks back down after registration) */}
             <button
               type="button"
               onClick={handleGlassClick}
-              aria-label={isCaseOpen ? 'Safety cover open' : 'Open emergency button safety cover'}
+              aria-label={isRegistered ? 'Safety cover permanently locked after registration' : isCaseOpen ? 'Safety cover open' : 'Open emergency button safety cover'}
               aria-expanded={isCaseOpen}
-              disabled={isCaseOpen}
-              className={`glass-cover absolute -inset-0.5 z-20 cursor-pointer rounded-full border sm:border-2 md:border-[2.5px] border-white/85 transition-all duration-500 origin-top flex items-center justify-center ${
+              disabled={isCaseOpen || isRegistered}
+              className={`glass-cover absolute -inset-0.5 z-20 rounded-full border sm:border-2 md:border-[2.5px] border-white/85 transition-all duration-500 origin-top flex items-center justify-center ${
                 isCaseOpen
                   ? 'glass-cover-open pointer-events-none opacity-20'
-                  : 'opacity-90 hover:border-among-cyan hover:shadow-neon-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-white'
+                  : isRegistered
+                    ? 'cursor-not-allowed opacity-95 border-emerald-400/80'
+                    : 'cursor-pointer opacity-90 hover:border-among-cyan hover:shadow-neon-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-white'
               }`}
               style={{
                 background: 'radial-gradient(circle at 35% 30%, rgba(255,255,255,0.65) 0%, rgba(56,254,220,0.2) 50%, rgba(255,255,255,0.15) 100%)',
                 backdropFilter: 'blur(1px)',
                 boxShadow: 'inset 0 0 12px rgba(255,255,255,0.55), 0 4px 10px rgba(0,0,0,0.65)'
               }}
-              title="Click to flip open glass safety cover"
+              title={isRegistered ? 'You are already registered! Be ready!' : 'Click to flip open glass safety cover'}
             >
               {/* Curved Glass Specular Glint */}
               <div className="absolute top-1 sm:top-1.5 left-2 sm:left-3 right-2 sm:right-3 h-1 sm:h-2.5 bg-white/50 rounded-full blur-[0.5px] pointer-events-none" />
               
               {!isCaseOpen && (
-                <div className="bg-black/90 px-1 sm:px-2 py-[0.5px] sm:py-0.5 rounded text-[4.5px] sm:text-[8.5px] md:text-[10px] font-mono font-bold text-among-yellow border border-yellow-500 whitespace-nowrap animate-pulse shadow-md tracking-wider leading-tight">
-                  OPEN
+                <div
+                  className={`bg-black/90 px-1 sm:px-1.5 py-[0.5px] sm:py-0.5 rounded text-[4px] sm:text-[7.5px] md:text-[9px] font-mono font-bold whitespace-nowrap shadow-md tracking-wider leading-tight border ${
+                    isRegistered
+                      ? 'text-among-lime border-green-500'
+                      : 'text-among-yellow border-yellow-500 animate-pulse'
+                  }`}
+                >
+                  {isRegistered ? 'LOCKED' : 'OPEN'}
                 </div>
               )}
             </button>

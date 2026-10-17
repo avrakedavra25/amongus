@@ -10,10 +10,12 @@ import { AsteroidField } from './AsteroidField';
 
 interface DeepSpaceSectionsProps {
   onTriggerEmergency: () => void;
+  isRegistered?: boolean;
 }
 
 export const DeepSpaceSections: React.FC<DeepSpaceSectionsProps> = ({
-  onTriggerEmergency
+  onTriggerEmergency,
+  isRegistered = false
 }) => {
   const dateInfo = EVENT_CONFIG.infoFiles.find((item) => item.id === 'date');
   const timeInfo = EVENT_CONFIG.infoFiles.find((item) => item.id === 'time');
@@ -322,14 +324,20 @@ export const DeepSpaceSections: React.FC<DeepSpaceSectionsProps> = ({
               Slots are capped across all 6 hostel sectors. Trigger the emergency meeting now to claim your crewmate pass.
             </p>
             <button
+              disabled={isRegistered}
               onClick={() => {
+                if (isRegistered) return;
                 sound.playButtonSlam();
                 onTriggerEmergency();
               }}
-              className="inline-flex items-center gap-2 bg-among-red hover:bg-red-600 text-white font-black text-sm uppercase px-8 py-3.5 rounded-lg border-2 border-black shadow-game-button active:shadow-game-button-active active:translate-y-1 transition-all tracking-wider"
+              className={`inline-flex items-center gap-2 font-black text-sm uppercase px-8 py-3.5 rounded-lg border-2 transition-all tracking-wider ${
+                isRegistered
+                  ? 'bg-emerald-900/80 text-among-lime border-emerald-600 cursor-not-allowed opacity-90'
+                  : 'bg-among-red hover:bg-red-600 text-white border-black shadow-game-button active:shadow-game-button-active active:translate-y-1'
+              }`}
             >
               <ShieldAlert className="w-5 h-5" />
-              <span>TRIGGER EMERGENCY REGISTRATION</span>
+              <span>{isRegistered ? 'REGISTRATION COMPLETE — BE READY ✓' : 'TRIGGER EMERGENCY REGISTRATION'}</span>
             </button>
           </div>
         </div>

@@ -17,13 +17,15 @@ export const App: React.FC = () => {
   const [isMapSelectOpen, setIsMapSelectOpen] = useState(false);
   const [isSwipeRegistrationOpen, setIsSwipeRegistrationOpen] = useState(false);
   const [selectedHostel, setSelectedHostel] = useState<string>('H1');
+  const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     document.title = EVENT_CONFIG.title;
   }, []);
 
-  // Triggered by the 2nd click on the Emergency Button
+  // Triggered by the 2nd click on the Emergency Button (blocked once registered)
   const handleTriggerEmergency = () => {
+    if (isRegistered) return;
     // Close other open modals
     setActiveTableModal(null);
     setIsEmergencyCutscene(true);
@@ -31,12 +33,20 @@ export const App: React.FC = () => {
 
   // Called when the Emergency Meeting cutscene finishes
   const handleCutsceneComplete = () => {
+    if (isRegistered) {
+      setIsEmergencyCutscene(false);
+      return;
+    }
     setIsEmergencyCutscene(false);
     setIsMapSelectOpen(true);
   };
 
   // Called when the player selects a Hostel Map
   const handleHostelSelected = (hostelId: string) => {
+    if (isRegistered) {
+      setIsMapSelectOpen(false);
+      return;
+    }
     setSelectedHostel(hostelId);
     setIsMapSelectOpen(false);
     setIsSwipeRegistrationOpen(true);
@@ -57,6 +67,7 @@ export const App: React.FC = () => {
       <Header
         onTriggerEmergency={handleTriggerEmergency}
         onNavigateSection={scrollToSection}
+        isRegistered={isRegistered}
       />
 
       {/* Main Content */}
@@ -65,6 +76,7 @@ export const App: React.FC = () => {
         <HeroHookSection
           onTriggerEmergency={handleTriggerEmergency}
           onExploreCafeteria={() => scrollToSection('cafeteria')}
+          isRegistered={isRegistered}
         />
 
         {/* Hero Section: The Skeld Cafeteria Room */}
@@ -72,11 +84,13 @@ export const App: React.FC = () => {
           onOpenSection={(section) => setActiveTableModal(section)}
           onTriggerEmergency={handleTriggerEmergency}
           onScrollDown={() => scrollToSection('info')}
+          isRegistered={isRegistered}
         />
 
         {/* Deep Space Content Sections (Wiki Archive) */}
         <DeepSpaceSections
           onTriggerEmergency={handleTriggerEmergency}
+          isRegistered={isRegistered}
         />
       </main>
 
@@ -115,7 +129,7 @@ export const App: React.FC = () => {
           isOpen={true}
           onClose={() => setIsSwipeRegistrationOpen(false)}
           onSuccess={() => {
-            // Keep open to show the victory banner
+            setIsRegistered(true);
           }}
         />
       )}

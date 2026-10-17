@@ -13,11 +13,13 @@ import { sound } from '../lib/sound';
 interface HeroHookSectionProps {
   onTriggerEmergency: () => void;
   onExploreCafeteria: () => void;
+  isRegistered?: boolean;
 }
 
 export const HeroHookSection: React.FC<HeroHookSectionProps> = ({
   onTriggerEmergency,
   onExploreCafeteria,
+  isRegistered = false,
 }) => {
   const [isShhhActive, setIsShhhActive] = useState(false);
 
@@ -31,6 +33,7 @@ export const HeroHookSection: React.FC<HeroHookSectionProps> = ({
   };
 
   const handleEmergencyClick = () => {
+    if (isRegistered) return;
     sound.playButtonSlam();
     onTriggerEmergency();
   };
@@ -122,11 +125,16 @@ export const HeroHookSection: React.FC<HeroHookSectionProps> = ({
             {/* Primary CTA: Emergency Registration */}
             <button
               onClick={handleEmergencyClick}
-              className="w-full sm:w-auto flex items-center justify-center gap-3 bg-among-red hover:bg-red-600 text-white font-game text-sm sm:text-base px-7 py-3.5 rounded-lg border-2 border-among-darkred shadow-game-button active:shadow-game-button-active active:translate-y-1 transition-all uppercase tracking-wide group"
+              disabled={isRegistered}
+              className={`w-full sm:w-auto flex items-center justify-center gap-3 font-game text-sm sm:text-base px-7 py-3.5 rounded-lg border-2 transition-all uppercase tracking-wide group ${
+                isRegistered
+                  ? 'bg-emerald-900/80 text-among-lime border-emerald-600 cursor-not-allowed opacity-90'
+                  : 'bg-among-red hover:bg-red-600 text-white border-among-darkred shadow-game-button active:shadow-game-button-active active:translate-y-1'
+              }`}
             >
-              <AlertTriangle className="w-5 h-5 text-among-yellow animate-pulse group-hover:rotate-12 transition-transform" />
-              <span>EMERGENCY REGISTER</span>
-              <span className="text-among-yellow font-bold">→</span>
+              <AlertTriangle className={`w-5 h-5 ${isRegistered ? 'text-among-lime' : 'text-among-yellow animate-pulse group-hover:rotate-12'} transition-transform`} />
+              <span>{isRegistered ? 'REGISTERED — BE READY ✓' : 'EMERGENCY REGISTER'}</span>
+              {!isRegistered && <span className="text-among-yellow font-bold">→</span>}
             </button>
 
             {/* Secondary CTA: Enter Cafeteria */}

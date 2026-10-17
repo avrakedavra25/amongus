@@ -6,11 +6,13 @@ import { EVENT_CONFIG } from '../config/eventConfig';
 interface HeaderProps {
   onTriggerEmergency: () => void;
   onNavigateSection: (sectionId: string) => void;
+  isRegistered?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   onTriggerEmergency,
   onNavigateSection,
+  isRegistered = false,
 }) => {
   const [isMuted, setIsMuted] = useState(sound.isMuted);
 
@@ -97,15 +99,27 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Quick Emergency Register Button */}
           <button
             type="button"
+            disabled={isRegistered}
             onClick={() => {
+              if (isRegistered) return;
               sound.playButtonSlam();
               onTriggerEmergency();
             }}
-            className="flex items-center gap-1 sm:gap-1.5 bg-among-red hover:bg-red-600 text-white font-bold text-[10px] sm:text-xs uppercase px-2.5 sm:px-3 py-1.5 rounded border-2 border-black shadow-game-button active:shadow-game-button-active active:translate-y-1 transition-all whitespace-nowrap"
+            className={`flex items-center gap-1 sm:gap-1.5 font-bold text-[10px] sm:text-xs uppercase px-2.5 sm:px-3 py-1.5 rounded border-2 border-black transition-all whitespace-nowrap ${
+              isRegistered
+                ? 'bg-emerald-900/80 text-among-lime border-emerald-600 cursor-not-allowed opacity-90'
+                : 'bg-among-red hover:bg-red-600 text-white shadow-game-button active:shadow-game-button-active active:translate-y-1'
+            }`}
           >
             <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
-            <span className="hidden sm:inline">EMERGENCY</span>
-            <span>REGISTER</span>
+            {isRegistered ? (
+              <span>REGISTERED ✓</span>
+            ) : (
+              <>
+                <span className="hidden sm:inline">EMERGENCY</span>
+                <span>REGISTER</span>
+              </>
+            )}
           </button>
         </div>
       </div>
