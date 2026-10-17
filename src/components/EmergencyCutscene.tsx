@@ -14,20 +14,22 @@ export const EmergencyCutscene: React.FC<EmergencyCutsceneProps> = ({ onComplete
     // 1. Play authentic emergency alarm siren and dramatic stinger
     sound.playEmergencyAlarm();
 
-    // 2. Banner impact slam completes in 300ms
+    // 2. Banner impact slam completes in 400ms
+    let completeTimer: ReturnType<typeof setTimeout> | null = null;
     const slamTimer = setTimeout(() => {
       setStage('hold');
     }, 400);
 
-    // 3. Fade out and proceed to map selection after 1800ms
+    // 3. Fade out and proceed to map selection after 1900ms
     const finishTimer = setTimeout(() => {
       setStage('fade');
-      setTimeout(onComplete, 400);
+      completeTimer = setTimeout(onComplete, 400);
     }, 1900);
 
     return () => {
       clearTimeout(slamTimer);
       clearTimeout(finishTimer);
+      if (completeTimer) clearTimeout(completeTimer);
     };
   }, [onComplete]);
 

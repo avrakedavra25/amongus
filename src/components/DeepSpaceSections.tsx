@@ -6,6 +6,7 @@ import {
 import { EVENT_CONFIG } from '../config/eventConfig';
 import { Crewmate } from '../assets/crewmates';
 import { sound } from '../lib/sound';
+import { AsteroidField } from './AsteroidField';
 
 interface DeepSpaceSectionsProps {
   onTriggerEmergency: () => void;
@@ -47,7 +48,7 @@ export const DeepSpaceSections: React.FC<DeepSpaceSectionsProps> = ({
           className="absolute top-[52%] -left-20 animate-tumble opacity-50"
           style={{ animationDuration: '32s', animationDelay: '8s' }}
         >
-          <Crewmate color="cyan" hat="none" className="w-14 h-18" />
+          <Crewmate color="cyan" hat="none" className="w-14 h-[72px]" />
         </div>
 
         {/* Tumbling Ejected Crewmate 3 (Yellow with Banana) */}
@@ -58,6 +59,9 @@ export const DeepSpaceSections: React.FC<DeepSpaceSectionsProps> = ({
           <Crewmate color="yellow" hat="banana" className="w-12 h-16" />
         </div>
       </div>
+
+      {/* INTERACTIVE FLOATING ASTEROIDS (Skeld Weapons: Clear Asteroids Add-on) */}
+      <AsteroidField />
 
       {/* CONTENT PANELS STYLED LIKE THE AMONG US FANDOM WIKI / DATABASE */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-16 space-y-24">

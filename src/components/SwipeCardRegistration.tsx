@@ -35,10 +35,11 @@ export const SwipeCardRegistration: React.FC<SwipeCardRegistrationProps> = ({
   const [savedData, setSavedData] = useState<RegistrationData | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOfflineSave, setIsOfflineSave] = useState(false);
-  const [isCardRevealed, setIsCardRevealed] = useState(false);
+  const [isCardRevealed, setIsCardRevealed] = useState(true);
 
   // Swipe gesture tracking
   const [isDragging, setIsDragging] = useState(false);
+  const [isAutoSwiping, setIsAutoSwiping] = useState(false);
   const [cardX, setCardX] = useState(0);
   const slotRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -46,6 +47,18 @@ export const SwipeCardRegistration: React.FC<SwipeCardRegistrationProps> = ({
   const swipePendingRef = useRef(false);
   const swipeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dialogRef = useModalAccessibility<HTMLDivElement>({ onClose, enabled: isOpen, closeOnEscape: !isSubmitting });
+
+  const BRANCH_OPTIONS = [
+    'CSE(core)',
+    'CSE(AI)',
+    'CSE(DS)',
+    'CSE(CS)',
+    'CSE(CPS)',
+    'MNC',
+    'PNC',
+    'IT',
+    'ECE',
+  ] as const;
 
   useEffect(() => {
     if (selectedHostel) {
@@ -76,7 +89,10 @@ export const SwipeCardRegistration: React.FC<SwipeCardRegistrationProps> = ({
   // Execute registration submission
   const executeSubmission = async () => {
     if (submittingRef.current || isSuccess) return;
-    if (!formRef.current?.reportValidity()) return;
+    if (!formRef.current?.reportValidity()) {
+      setCardX(0);
+      return;
+    }
     submittingRef.current = true;
     setIsSubmitting(true);
     setLcdMessage('TRANSMITTING REGISTRATION...');
@@ -118,6 +134,7 @@ export const SwipeCardRegistration: React.FC<SwipeCardRegistrationProps> = ({
 
   // Forgiving Drag & Swipe handlers
   const handleDragStart = () => {
+    if (isAutoSwiping) return;
     if (!isFormComplete) {
       sound.playCardError();
       setLcdMessage('INCOMPLETE REGISTRATION. ENTER FIELDS FIRST.');
@@ -154,7 +171,7 @@ export const SwipeCardRegistration: React.FC<SwipeCardRegistrationProps> = ({
     }
   };
 
-  // Easy-Mode "Swipe For Me" Button
+  // Easy-Mode "Swipe For Me" Button — Continuous smooth glide across the full reader slot
   const handleAutoSwipe = () => {
     if (swipePendingRef.current || submittingRef.current || isSubmitting) return;
     if (!isFormComplete) {
@@ -166,14 +183,29 @@ export const SwipeCardRegistration: React.FC<SwipeCardRegistrationProps> = ({
     }
 
     swipePendingRef.current = true;
+    setIsAutoSwiping(true);
+    setLcdMessage('READING CARD...');
+    setLcdStatus('normal');
     sound.playCardSwipe();
-    setCardX(180);
+
+    const fullSlotTravel = slotRef.current
+      ? Math.max(220, slotRef.current.clientWidth - 128)
+      : 480;
+
+    // Reset to start if needed, then smoothly glide all the way across on next frame
+    setCardX(0);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setCardX(fullSlotTravel);
+      });
+    });
+
     swipeTimerRef.current = setTimeout(() => {
-      setCardX(300);
       swipePendingRef.current = false;
+      setIsAutoSwiping(false);
       swipeTimerRef.current = null;
       executeSubmission();
-    }, 280);
+    }, 680);
   };
 
   return (
@@ -399,18 +431,23 @@ export const SwipeCardRegistration: React.FC<SwipeCardRegistrationProps> = ({
                   <label htmlFor="registration-branch" className="block text-[11px] font-mono font-bold text-gray-900 uppercase mb-1">
                     3. Academic Branch *
                   </label>
-                  <input
+                  <select
                     id="registration-branch"
                     name="branch"
-                    type="text"
                     required
-                    minLength={1}
-                    maxLength={120}
                     value={branch}
                     onChange={(e) => setBranch(e.target.value)}
-                    placeholder="e.g. CSE / ECE / MECH"
-                    className="w-full rounded-sm border-2 border-[#292e30] bg-[#e4e5e3] px-3 py-1.5 font-mono text-xs text-black focus:border-among-cyan focus:bg-white focus:outline-none"
-                  />
+                    className="w-full rounded-sm border-2 border-[#292e30] bg-[#e4e5e3] px-3 py-1.5 font-mono text-xs text-black focus:border-among-cyan focus:bg-white focus:outline-none cursor-pointer"
+                  >
+                    <option value="" disabled>
+                      Select your branch...
+                    </option>
+                    {BRANCH_OPTIONS.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* 4. Email */}
@@ -477,13 +514,13 @@ export const SwipeCardRegistration: React.FC<SwipeCardRegistrationProps> = ({
                   <span id="registration-color-label" className="block text-[11px] font-mono font-bold text-gray-900 uppercase mb-1">
                     Suit Color
                   </span>
-                  <div role="group" aria-labelledby="registration-color-label" className="flex items-center gap-1.5 overflow-x-auto py-1">
-                    {(Object.keys(CREWMATE_COLORS) as CrewmateColor[]).slice(0, 7).map((colorKey) => (
+                  <div role="group" aria-labelledby="registration-color-label" className="flex flex-wrap items-center gap-1.5 py-1">
+                    {(Object.keys(CREWMATE_COLORS) as CrewmateColor[]).map((colorKey) => (
                       <button
                         key={colorKey}
                         type="button"
                         onClick={() => { sound.playHover(); setCrewColor(colorKey); }}
-                        className={`w-5 h-5 rounded-full border-2 transition-transform ${
+                        className={`w-5 h-5 shrink-0 rounded-full border-2 transition-transform ${
                           crewColor === colorKey ? 'border-black scale-125 ring-2 ring-white' : 'border-black/50 hover:scale-110'
                         }`}
                         style={{ backgroundColor: CREWMATE_COLORS[colorKey].base }}
@@ -515,7 +552,11 @@ export const SwipeCardRegistration: React.FC<SwipeCardRegistrationProps> = ({
                 onTouchStart={handleDragStart}
                 style={{ transform: `translateX(${cardX}px)` }}
                 className={`absolute left-2 z-20 cursor-grab active:cursor-grabbing transition-transform ${
-                  isDragging ? 'duration-0' : 'duration-200'
+                  isDragging
+                    ? 'duration-0'
+                    : isAutoSwiping
+                    ? 'duration-[660ms] ease-[cubic-bezier(0.22,1,0.36,1)]'
+                    : 'duration-200'
                 }`}
               >
                 {/* In-Game Keycard graphic */}

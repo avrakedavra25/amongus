@@ -117,6 +117,43 @@ export const Crewmate: React.FC<CrewmateProps> = ({
           </g>
         )}
 
+        {hat === 'banana' && (
+          <g transform="translate(38, 2)">
+            {/* Banana stem & peel top */}
+            <path
+              d="M16 4 C14 10, 8 18, 2 22 C10 22, 16 18, 18 14 C20 18, 26 22, 34 22 C28 18, 22 10, 20 4 Z"
+              fill="#FACC15"
+              stroke="#000000"
+              strokeWidth="3"
+              strokeLinejoin="round"
+            />
+            <rect x="15" y="0" width="6" height="5" rx="1" fill="#713F12" stroke="#000000" strokeWidth="2" />
+          </g>
+        )}
+
+        {hat === 'ninja' && (
+          <g transform="translate(30, 16)">
+            {/* Ninja knot tails */}
+            <path
+              d="M4 6 L-8 0 L-4 8 L-9 14 L5 10 Z"
+              fill="#1E293B"
+              stroke="#000000"
+              strokeWidth="2.5"
+              strokeLinejoin="round"
+            />
+            {/* Headband strap */}
+            <path
+              d="M3 4 C15 1, 35 1, 47 4 L48 12 C35 9, 15 9, 2 12 Z"
+              fill="#1E293B"
+              stroke="#000000"
+              strokeWidth="3"
+              strokeLinejoin="round"
+            />
+            {/* Metal forehead plate */}
+            <rect x="16" y="4" width="18" height="6" rx="1.5" fill="#94A3B8" stroke="#000000" strokeWidth="2" />
+          </g>
+        )}
+
         {/* BACKPACK */}
         <path
           d="M18 42 C18 34, 25 34, 26 34 L26 84 C25 84, 18 84, 18 76 Z"

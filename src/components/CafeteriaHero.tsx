@@ -327,7 +327,7 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
         {/* CRT Scanline Overlay */}
         <div className="pointer-events-none absolute inset-0 z-10 scanlines opacity-20" aria-hidden="true" />
 
-        {/* 4 OUTER TABLE LAPTOPS (Only the sleek laptop and floating label above) */}
+        {/* 4 OUTER TABLE LAPTOPS (Proportionally scaled to fit cleanly inside each corner table on mobile & desktop) */}
         {OUTER_TABLES.map((table) => (
           <button
             type="button"
@@ -342,19 +342,19 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
             className="group absolute z-20 flex flex-col items-center justify-center rounded-xl bg-transparent transition-transform hover:scale-110 focus-visible:outline focus-visible:outline-4 focus-visible:outline-among-cyan select-none"
           >
             {/* Floating Pixel Label above table */}
-            <span className="mb-0.5 sm:mb-1 rounded-md border-2 border-black bg-[#162228]/95 px-1.5 sm:px-2.5 py-0.5 text-[6.5px] sm:text-[8px] md:text-[10px] font-mono font-bold tracking-wider text-white shadow-lg group-hover:border-among-cyan group-hover:text-among-cyan group-hover:shadow-neon-cyan transition-all whitespace-nowrap">
+            <span className="mb-[1px] sm:mb-1 rounded sm:rounded-md border sm:border-2 border-black bg-[#162228]/95 px-1 sm:px-2.5 py-[1px] sm:py-0.5 text-[5px] sm:text-[8px] md:text-[10px] font-mono font-bold tracking-wider text-white shadow-md sm:shadow-lg group-hover:border-among-cyan group-hover:text-among-cyan group-hover:shadow-neon-cyan transition-all whitespace-nowrap">
               {table.label}
             </span>
 
-            {/* In-Game Lobby Laptop sitting cleanly on table */}
-            <div className="relative flex flex-col items-center my-0.5">
-              <div className="relative flex h-5.5 w-8 sm:h-7 sm:w-10 md:h-9 md:w-13 items-center justify-center rounded-sm border-2 border-black bg-[#1E2B24] shadow-[0_3px_0_#10181c] group-hover:shadow-neon-cyan transition-shadow">
+            {/* In-Game Lobby Laptop sitting cleanly inside tabletop */}
+            <div className="relative flex flex-col items-center my-0 sm:my-0.5">
+              <div className="relative flex h-[11px] w-[17px] sm:h-7 sm:w-10 md:h-9 md:w-[52px] items-center justify-center rounded-[2px] sm:rounded-sm border sm:border-2 border-black bg-[#1E2B24] shadow-[0_1.5px_0_#10181c] sm:shadow-[0_3px_0_#10181c] group-hover:shadow-neon-cyan transition-shadow">
                 {/* Screen with Scanlines */}
-                <div className="h-3.5 w-6 sm:h-4.5 sm:w-7.5 md:h-5.5 md:w-9 rounded-xs bg-[#081C15] group-hover:bg-among-cyan/25 border border-gray-600 flex items-center justify-center transition-colors">
-                  <Laptop className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-among-cyan group-hover:scale-110 transition-transform" aria-hidden="true" />
+                <div className="h-[7px] w-[13px] sm:h-[18px] sm:w-[30px] md:h-[22px] md:w-9 rounded-[1px] sm:rounded-[2px] bg-[#081C15] group-hover:bg-among-cyan/25 border border-gray-600 flex items-center justify-center transition-colors">
+                  <Laptop className="h-1.5 w-1.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-among-cyan group-hover:scale-110 transition-transform" aria-hidden="true" />
                 </div>
               </div>
-              <div className="h-1 sm:h-1.5 w-9 sm:w-11 md:w-15 bg-gray-800 border-2 border-black rounded-b-xs" />
+              <div className="h-[2.5px] sm:h-1.5 w-[20px] sm:w-11 md:w-[60px] bg-gray-800 border sm:border-2 border-black rounded-b-[1px] sm:rounded-b-[2px]" />
             </div>
           </button>
         ))}
@@ -375,15 +375,15 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
                 setHoveredCrewmate(isHovered ? null : crew.id);
               }}
               style={{ left: `${crew.xPercent}%`, top: `${crew.yPercent}%`, transform: 'translate(-50%, -50%)' }}
-              className="absolute z-30 cursor-pointer flex flex-col items-center transition-transform hover:scale-115 select-none"
+              className="absolute z-30 cursor-pointer flex flex-col items-center transition-transform hover:scale-110 select-none"
             >
               {/* Speech Bubble on Hover with directional tail pointing to speaker */}
               {isHovered && (
                 <div 
-                  className={`absolute z-40 w-44 sm:w-56 rounded-xl border-2 border-black bg-white p-1.5 sm:p-2 text-center text-[9px] sm:text-xs font-mono font-bold text-gray-900 shadow-2xl pointer-events-none animate-fadeIn ${
+                  className={`absolute z-40 w-36 sm:w-56 rounded-lg sm:rounded-xl border-2 border-black bg-white p-1 sm:p-2 text-center text-[8px] sm:text-xs font-mono font-bold text-gray-900 shadow-2xl pointer-events-none animate-fadeIn ${
                     crew.bubblePosition === 'bottom' 
-                      ? 'top-full mt-2.5 bubble-tail-top' 
-                      : 'bottom-full mb-2.5 bubble-tail-bottom'
+                      ? 'top-full mt-2 bubble-tail-top' 
+                      : 'bottom-full mb-2 bubble-tail-bottom'
                   }`}
                 >
                   <span className={isCaseOpen ? 'text-among-red animate-pulse' : 'text-gray-900'}>
@@ -393,7 +393,7 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
               )}
 
               {/* Player Name Tag */}
-              <span className="mb-0.5 rounded border border-gray-800 bg-black/85 px-0.5 sm:px-1 py-0.2 text-[6px] sm:text-[7px] md:text-[9px] font-mono font-bold text-white shadow">
+              <span className="mb-[1px] sm:mb-0.5 rounded border border-gray-800 bg-black/85 px-0.5 sm:px-1.5 py-[0.5px] sm:py-0.5 text-[4.5px] sm:text-[7px] md:text-[9px] font-mono font-bold text-white shadow leading-tight">
                 {crew.name}
               </span>
 
@@ -402,50 +402,50 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
                 color={crew.color}
                 hat={crew.hat}
                 flipX={crew.flipX}
-                className="h-7 w-5.5 sm:h-10 sm:w-8 md:h-13 md:w-10 drop-shadow-md"
+                className="h-[18px] w-[14px] sm:h-10 sm:w-8 md:h-[52px] md:w-10 drop-shadow-md"
               />
             </div>
           );
         })}
 
-        {/* CENTRAL EMERGENCY BUTTON CONSOLE (Dead Center of the Meeting Table: 50%, 50%) */}
+        {/* CENTRAL EMERGENCY BUTTON CONSOLE (Proportional 9.2% of cafeteria room width so it always fits inside the central table) */}
         <div
-          style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
-          className="absolute z-40 flex h-11 w-11 sm:h-14 sm:w-14 md:h-17 md:w-17 aspect-square items-center justify-center rounded-full border-2 sm:border-3 border-black bg-[#161f26] p-0.5 sm:p-1 shadow-[0_6px_20px_rgba(0,0,0,0.85)] perspective-container"
+          style={{ left: '50%', top: '51.43%', transform: 'translate(-50%, -50%)' }}
+          className="absolute z-40 flex w-[9.2%] min-w-[30px] max-w-[110px] aspect-square items-center justify-center rounded-full border sm:border-2 md:border-[3px] border-black bg-[#161f26] p-[2px] sm:p-1 md:p-1.5 shadow-[0_6px_20px_rgba(0,0,0,0.9)] perspective-container"
         >
           {/* Yellow & Black Circular Hazard Stripes Ring */}
-          <div className="absolute inset-0 rounded-full hazard-stripes opacity-90 border border-black pointer-events-none" />
+          <div className="absolute inset-0 rounded-full hazard-stripes opacity-95 border border-black pointer-events-none" />
 
           {/* Inner Circular Metal Well */}
-          <div className="relative z-10 flex h-full w-full aspect-square items-center justify-center rounded-full bg-[#0a1015] border-2 border-black p-0.5 shadow-inner">
+          <div className="relative z-10 flex h-full w-full aspect-square items-center justify-center rounded-full bg-[#0a1015] border sm:border-2 border-black p-[1.5px] sm:p-1 shadow-inner">
             
             {/* The Red Emergency Button - Strictly Circular */}
             <button
               type="button"
               onClick={handleButtonClick}
               aria-label={isCaseOpen ? 'Press emergency button to register' : 'Emergency button locked under safety cover'}
-              className={`relative z-10 flex aspect-square h-[84%] w-[84%] shrink-0 items-center justify-center rounded-full border-2 border-black text-white font-black select-none transition-all ${
+              className={`relative z-10 flex aspect-square h-[88%] w-[88%] shrink-0 items-center justify-center rounded-full border sm:border-2 border-black text-white font-black select-none transition-all ${
                 isButtonDepressed ? 'scale-95 shadow-none' : 'hover:scale-105 active:scale-95'
               }`}
               style={{
                 backgroundColor: '#C51111',
-                boxShadow: isButtonDepressed ? 'none' : '0 3.5px 0 #7A0838, 0 4px 8px rgba(0,0,0,0.75)'
+                boxShadow: isButtonDepressed ? 'none' : '0 3px 0 #7A0838, 0 4px 8px rgba(0,0,0,0.8)'
               }}
               title={isCaseOpen ? 'Press to trigger Emergency Registration' : 'Click glass cover first'}
             >
               {/* Scalable Vector Label Guaranteed Never to Crop */}
-              <svg viewBox="0 0 100 100" className="w-[88%] h-[88%] pointer-events-none select-none">
+              <svg viewBox="0 0 100 100" className="w-[92%] h-[92%] pointer-events-none select-none">
                 <text
                   x="50"
-                  y="46"
+                  y="44"
                   textAnchor="middle"
                   dominantBaseline="central"
                   fill="#FFFFFF"
                   fontWeight="900"
-                  fontSize="12.5"
+                  fontSize="13.5"
                   fontFamily="'Space Grotesk', sans-serif"
-                  letterSpacing="-0.3"
-                  style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.95))' }}
+                  letterSpacing="-0.2"
+                  style={{ filter: 'drop-shadow(0 1.5px 2px rgba(0,0,0,0.95))' }}
                 >
                   EMERGENCY
                 </text>
@@ -455,11 +455,11 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
                   textAnchor="middle"
                   dominantBaseline="central"
                   fill="#FEF08A"
-                  fontWeight="800"
-                  fontSize="10"
+                  fontWeight="900"
+                  fontSize="12"
                   fontFamily="monospace"
-                  letterSpacing="0.5"
-                  style={{ filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.9))' }}
+                  letterSpacing="0.8"
+                  style={{ filter: 'drop-shadow(0 1.5px 2px rgba(0,0,0,0.95))' }}
                 >
                   {isCaseOpen ? 'PRESS' : 'LOCKED'}
                 </text>
@@ -473,7 +473,7 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
               aria-label={isCaseOpen ? 'Safety cover open' : 'Open emergency button safety cover'}
               aria-expanded={isCaseOpen}
               disabled={isCaseOpen}
-              className={`glass-cover absolute -inset-0.5 z-20 cursor-pointer rounded-full border-2 border-white/80 transition-all duration-500 origin-top flex items-center justify-center ${
+              className={`glass-cover absolute -inset-0.5 z-20 cursor-pointer rounded-full border sm:border-2 md:border-[2.5px] border-white/85 transition-all duration-500 origin-top flex items-center justify-center ${
                 isCaseOpen
                   ? 'glass-cover-open pointer-events-none opacity-20'
                   : 'opacity-90 hover:border-among-cyan hover:shadow-neon-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-white'
@@ -481,15 +481,15 @@ export const CafeteriaHero: React.FC<CafeteriaHeroProps> = ({
               style={{
                 background: 'radial-gradient(circle at 35% 30%, rgba(255,255,255,0.65) 0%, rgba(56,254,220,0.2) 50%, rgba(255,255,255,0.15) 100%)',
                 backdropFilter: 'blur(1px)',
-                boxShadow: 'inset 0 0 10px rgba(255,255,255,0.5), 0 3px 8px rgba(0,0,0,0.6)'
+                boxShadow: 'inset 0 0 12px rgba(255,255,255,0.55), 0 4px 10px rgba(0,0,0,0.65)'
               }}
               title="Click to flip open glass safety cover"
             >
               {/* Curved Glass Specular Glint */}
-              <div className="absolute top-1 left-2 right-2 h-1.5 sm:h-2 bg-white/50 rounded-full blur-[0.5px] pointer-events-none" />
+              <div className="absolute top-1 sm:top-1.5 left-2 sm:left-3 right-2 sm:right-3 h-1 sm:h-2.5 bg-white/50 rounded-full blur-[0.5px] pointer-events-none" />
               
               {!isCaseOpen && (
-                <div className="bg-black/90 px-1 sm:px-1.5 py-0.5 rounded text-[5px] sm:text-[6.5px] font-mono font-bold text-among-yellow border border-yellow-500 whitespace-nowrap animate-pulse shadow-md">
+                <div className="bg-black/90 px-1 sm:px-2 py-[0.5px] sm:py-0.5 rounded text-[4.5px] sm:text-[8.5px] md:text-[10px] font-mono font-bold text-among-yellow border border-yellow-500 whitespace-nowrap animate-pulse shadow-md tracking-wider leading-tight">
                   OPEN
                 </div>
               )}

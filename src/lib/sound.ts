@@ -292,6 +292,71 @@ class SoundManager {
     osc.stop(this.ctx.currentTime + 0.22);
   }
 
+  // Skeld Weapons: Clear Asteroids Laser Shot + Rock Shatter Crunch
+  public playAsteroidDestroy() {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+
+    // 1. Punchy Laser Turret Pew (rapid descending frequency sweep)
+    const laserOsc = this.ctx.createOscillator();
+    const laserGain = this.ctx.createGain();
+    laserOsc.type = 'sawtooth';
+    laserOsc.frequency.setValueAtTime(1150, now);
+    laserOsc.frequency.exponentialRampToValueAtTime(140, now + 0.14);
+
+    laserGain.gain.setValueAtTime(0.18, now);
+    laserGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+    laserOsc.connect(laserGain);
+    laserGain.connect(this.ctx.destination);
+    laserOsc.start(now);
+    laserOsc.stop(now + 0.16);
+
+    // 2. Rock Shatter Explosion Crunch (filtered noise + sub thump)
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    subOsc.type = 'triangle';
+    subOsc.frequency.setValueAtTime(160, now + 0.02);
+    subOsc.frequency.exponentialRampToValueAtTime(42, now + 0.24);
+
+    subGain.gain.setValueAtTime(0.24, now + 0.02);
+    subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+    subOsc.connect(subGain);
+    subGain.connect(this.ctx.destination);
+    subOsc.start(now + 0.02);
+    subOsc.stop(now + 0.26);
+
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.24);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * 0.85;
+    }
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(950, now + 0.02);
+    filter.frequency.exponentialRampToValueAtTime(180, now + 0.24);
+
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.2, now + 0.02);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(this.ctx.destination);
+
+    noise.start(now + 0.02);
+    noise.stop(now + 0.26);
+  }
+
   // Iconic Among Us "Shhhhh..." Intro Sound (Official in-game audio with synthesized fallback)
   public playShhh() {
     if (this.isMuted) return;

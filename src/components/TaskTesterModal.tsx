@@ -128,10 +128,14 @@ export const TaskTesterModal: React.FC<TaskTesterModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn"
+    >
       {/* Outer Retro OS Terminal Window (Authentic In-Game Task Tester 2000 style) */}
       <div
         ref={dialogRef}
+        onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="task-tester-title"
@@ -145,10 +149,11 @@ export const TaskTesterModal: React.FC<TaskTesterModalProps> = ({
         <div className="bg-[#2B3C33] px-3 py-2 flex items-center justify-between border-b-2 border-[#1E2B24] select-none">
           <div className="flex items-center gap-2">
             <button 
+              type="button"
               onClick={() => {
                 sound.playBlip();
                 if (selectedFile) setSelectedFile(null);
-                else setIsAtHome(true);
+                else setIsAtHome((prev) => !prev);
               }}
               className="p-1 rounded bg-[#3D5246] hover:bg-[#4E6759] text-gray-200 transition-colors"
               title="Back"

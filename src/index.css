@@ -102,6 +102,21 @@ body {
   animation: twinkle 3s ease-in-out infinite;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
 /* Speech Bubble Tails */
 .bubble-tail-bottom::after {
   content: '';
@@ -142,6 +157,37 @@ body {
 
 .glass-cover-open {
   transform: rotateX(-110deg) scale(0.9);
+}
+
+/* Skeld Weapons: Clear Asteroids Shatter & HUD Flash Animations */
+@keyframes shardBurst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(0px, 0px) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--shard-dx, 30px), var(--shard-dy, -30px)) rotate(var(--shard-rot, 90deg)) scale(0.35);
+  }
+}
+
+.asteroid-shard-burst {
+  animation: shardBurst 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes hudPop {
+  0% {
+    transform: scale(1.08);
+    filter: brightness(1.45);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+.asteroid-hud-flash {
+  animation: hudPop 0.22s ease-out forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
